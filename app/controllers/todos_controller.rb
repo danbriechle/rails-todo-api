@@ -2,7 +2,12 @@ class TodosController < ApplicationController
   before_action :set_todo, only: [:show, :update, :destroy]
 
   def index
-    todos = Todo.order(created_at: :desc)
+    todos = nil
+
+    ActiveRecord::Base.connected_to(role: :reading) do
+      todos = Todo.all
+    end
+
     render json: todos
   end
 
@@ -35,7 +40,9 @@ class TodosController < ApplicationController
   private
 
   def set_todo
-    @todo = Todo.find(params[:id])
+    ActiveRecord::Base.connected_to(role: :reading) do
+      @todo = Todo.find(params[:id])
+    end
   end
 
   def todo_params

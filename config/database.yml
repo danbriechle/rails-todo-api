@@ -17,9 +17,9 @@ development:
 
   primary_replica:
     <<: *default
-    database: backend_development_replica
+    database: backend_development
     host: localhost
-    port: 5433
+    port: 5432
     replica: true
 
 test:
@@ -31,9 +31,9 @@ test:
 
   primary_replica:
     <<: *default
-    database: backend_test_replica
+    database: backend_test
     host: localhost
-    port: 5433
+    port: 5432
     replica: true
 
 production:
