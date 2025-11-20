@@ -6,34 +6,27 @@ default: &default
   max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: <%= ENV.fetch("POSTGRES_USER") { "postgres" } %>
   password: <%= ENV.fetch("POSTGRES_PASSWORD") { "password" } %>
-  host: <%= ENV.fetch("POSTGRES_WRITE_HOST") { "localhost" } %>
+  host: <%= ENV.fetch("POSTGRES_HOST") { "localhost" } %>
+  port: <%= ENV.fetch("POSTGRES_PORT") { 5432 } %>
 
 development:
   primary:
     <<: *default
     database: backend_development
-    host: localhost
-    port: 5432
 
   primary_replica:
     <<: *default
     database: backend_development
-    host: localhost
-    port: 5432
     replica: true
 
 test:
   primary:
     <<: *default
     database: backend_test
-    host: localhost
-    port: 5432
 
   primary_replica:
     <<: *default
     database: backend_test
-    host: localhost
-    port: 5432
     replica: true
 
 production:
