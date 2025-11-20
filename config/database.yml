@@ -1,0 +1,53 @@
+# config/database.yml
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV.fetch("POSTGRES_USER") { "postgres" } %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") { "password" } %>
+  host: <%= ENV.fetch("POSTGRES_WRITE_HOST") { "localhost" } %>
+
+development:
+  primary:
+    <<: *default
+    database: backend_development
+    host: localhost
+    port: 5432
+
+  primary_replica:
+    <<: *default
+    database: backend_development_replica
+    host: localhost
+    port: 5433
+    replica: true
+
+test:
+  primary:
+    <<: *default
+    database: backend_test
+    host: localhost
+    port: 5432
+
+  primary_replica:
+    <<: *default
+    database: backend_test_replica
+    host: localhost
+    port: 5433
+    replica: true
+
+production:
+  primary:
+    <<: *default
+    database: <%= ENV.fetch("POSTGRES_WRITE_DB") { "backend_production" } %>
+    username: <%= ENV.fetch("POSTGRES_USER") { "backend" } %>
+    password: <%= ENV["BACKEND_DATABASE_PASSWORD"] %>
+    host: <%= ENV.fetch("POSTGRES_WRITE_HOST") { "postgres-write" } %>
+
+  primary_replica:
+    <<: *default
+    database: <%= ENV.fetch("POSTGRES_READ_DB") { "backend_production_replica" } %>
+    username: <%= ENV.fetch("POSTGRES_USER") { "backend" } %>
+    password: <%= ENV["BACKEND_DATABASE_PASSWORD"] %>
+    host: <%= ENV.fetch("POSTGRES_READ_HOST") { "postgres-read" } %>
+    replica: true
